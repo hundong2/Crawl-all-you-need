@@ -5,6 +5,7 @@ LLM 기반 웹사이트 크롤링 & 문서 변환 도구
 ## 주요 기능
 
 - ✅ **다중 LLM 제공자 지원**: OpenAI (ChatGPT), Anthropic (Claude), Google (Gemini)
+- ✅ **시스템 환경 변수 통합**: 안전한 API 키 관리
 - ✅ **유연한 크롤링**: 단일 페이지 또는 전체 사이트 크롤링
 - ✅ **다양한 출력 포맷**: Markdown, HTML, 텍스트
 - ✅ **AI 콘텐츠 정제**: LLM을 활용한 콘텐츠 구조화 및 정제
@@ -31,31 +32,95 @@ playwright install
 ```
 
 ### 4. 환경 변수 설정
-`.env` 파일 생성 (`.env.example` 참고):
+
+**시스템 환경 변수에 API 키 설정 (권장)**
+
+#### macOS / Linux
 ```bash
+# ~/.zshrc (zsh) 또는 ~/.bashrc (bash) 파일에 추가
+export OPENAI_API_KEY="sk-your-openai-key-here"
+export ANTHROPIC_API_KEY="sk-ant-your-anthropic-key-here"
+export GOOGLE_API_KEY="AIza-your-google-key-here"
+
+# 파일 저장 후 적용
+source ~/.zshrc  # 또는 source ~/.bashrc
+```
+
+#### Windows
+
+**방법 1: 시스템 설정에서 (GUI)**
+1. `제어판` → `시스템` → `고급 시스템 설정`
+2. `환경 변수` 버튼 클릭
+3. `사용자 변수`에서 `새로 만들기` 클릭
+4. 변수 이름과 값 입력:
+   - `OPENAI_API_KEY` = `your_key_here`
+   - `ANTHROPIC_API_KEY` = `your_key_here`
+   - `GOOGLE_API_KEY` = `your_key_here`
+
+**방법 2: PowerShell 사용**
+```powershell
+# 관리자 권한으로 PowerShell 실행
+[System.Environment]::SetEnvironmentVariable('OPENAI_API_KEY', 'your_key_here', 'User')
+[System.Environment]::SetEnvironmentVariable('ANTHROPIC_API_KEY', 'your_key_here', 'User')
+[System.Environment]::SetEnvironmentVariable('GOOGLE_API_KEY', 'your_key_here', 'User')
+```
+
+**방법 3: CMD 사용**
+```cmd
+setx OPENAI_API_KEY "your_key_here"
+setx ANTHROPIC_API_KEY "your_key_here"
+setx GOOGLE_API_KEY "your_key_here"
+```
+
+#### Docker 환경
+```bash
+docker run -e OPENAI_API_KEY=your_key \
+           -e ANTHROPIC_API_KEY=your_key \
+           -e GOOGLE_API_KEY=your_key \
+           your_image
+```
+
+#### .env 파일 사용 (선택사항)
+시스템 환경 변수 대신 프로젝트 디렉토리에 `.env` 파일 생성:
+```bash
+# .env 파일 생성
+cp .env.example .env
+
+# .env 파일 편집
 OPENAI_API_KEY=your_openai_key_here
 ANTHROPIC_API_KEY=your_anthropic_key_here
 GOOGLE_API_KEY=your_google_key_here
 ```
 
+> ⚠️ **보안 주의**: `.env` 파일은 Git에 커밋하지 마세요 (이미 .gitignore에 포함됨)
+
 ## 사용 방법
 
 ### 앱 실행
 ```bash
+# 가상환경 활성화 (처음 한 번만)
+source venv/bin/activate  # macOS/Linux
+# 또는
+venv\Scripts\activate  # Windows
+
+# Streamlit 앱 실행
 streamlit run app.py
 ```
 
+앱이 자동으로 브라우저에서 열립니다 (보통 http://localhost:8501)
+
 ### 사용 단계
-1. **LLM 제공자 선택**: 좌측 사이드바에서 원하는 제공자 선택
-2. **API 키 입력**: 해당 제공자의 API 키 입력
-3. **모델 선택**: 사용 가능한 모델 중 선택
-4. **URL 입력**: 크롤링할 웹사이트 주소 입력
-5. **크롤링 옵션 설정**:
+1. **환경 변수 확인**: 시스템 환경 변수가 설정되어 있으면 자동으로 API 키가 로드됩니다
+2. **LLM 제공자 선택**: 좌측 사이드바에서 원하는 제공자 선택
+3. **API 키 확인**: 환경 변수가 없으면 직접 입력
+4. **모델 선택**: 사용 가능한 모델 중 선택
+5. **URL 입력**: 크롤링할 웹사이트 주소 입력
+6. **크롤링 옵션 설정**:
    - 단일 페이지 또는 전체 사이트
    - 최대 페이지 수 (전체 사이트 모드)
    - 출력 포맷 선택
-6. **크롤링 시작**: 버튼 클릭
-7. **결과 다운로드**: 완료 후 파일 다운로드
+7. **크롤링 시작**: 버튼 클릭
+8. **결과 다운로드**: 완료 후 파일 다운로드
 
 ## 프로젝트 구조
 ```
@@ -70,6 +135,8 @@ Copilot/
 ├── app.py                      # Streamlit 앱
 ├── requirements.txt            # 의존성
 ├── .env.example               # 환경 변수 예시
+├── .gitignore                 # Git 제외 파일
+├── ENV_SETUP_GUIDE.md         # 환경 변수 설정 상세 가이드
 └── README.md                  # 문서
 ```
 

@@ -7,8 +7,8 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-# 환경 변수 로드
-load_dotenv()
+# 환경 변수 로드 (.env 파일이 있으면 로드, 없으면 시스템 환경 변수 사용)
+load_dotenv(override=False)
 
 # 모듈 임포트
 from ai_web_crawler.models.llm_providers import get_llm_provider, LLMProvider
@@ -48,12 +48,20 @@ with st.sidebar:
     env_key = api_key_env_map[provider_name]
     default_key = os.getenv(env_key, "")
     
-    api_key = st.text_input(
-        f"{provider_name} API 키",
-        value=default_key,
-        type="password",
-        help=f"{env_key} 환경 변수 또는 직접 입력"
-    )
+    if default_key:
+        api_key = st.text_input(
+            f"{provider_name} API 키",
+            value=default_key,
+            type="password",
+            help=f"✅ 시스템 환경 변수에서 자동 로드됨 ({env_key})"
+        )
+    else:
+        api_key = st.text_input(
+            f"{provider_name} API 키",
+            value="",
+            type="password",
+            help=f"⚠️ {env_key} 환경 변수가 설정되지 않았습니다. 직접 입력하거나 환경 변수를 설정하세요."
+        )
     
     # 모델 선택
     if api_key:
@@ -235,7 +243,24 @@ with st.expander("📖 사용 방법"):
     
     ### API 키 설정
     
-    `.env` 파일에 다음과 같이 저장할 수 있습니다:
+    **시스템 환경 변수에 API 키를 설정하세요** (권장):
+    
+    **macOS/Linux**:
+    ```bash
+    # ~/.zshrc 또는 ~/.bashrc에 추가
+    export OPENAI_API_KEY="your_key_here"
+    export ANTHROPIC_API_KEY="your_key_here"
+    export GOOGLE_API_KEY="your_key_here"
+    ```
+    
+    **Windows (PowerShell)**:
+    ```powershell
+    [System.Environment]::SetEnvironmentVariable('OPENAI_API_KEY', 'your_key_here', 'User')
+    [System.Environment]::SetEnvironmentVariable('ANTHROPIC_API_KEY', 'your_key_here', 'User')
+    [System.Environment]::SetEnvironmentVariable('GOOGLE_API_KEY', 'your_key_here', 'User')
+    ```
+    
+    **또는 .env 파일 사용** (선택사항):
     ```
     OPENAI_API_KEY=your_key_here
     ANTHROPIC_API_KEY=your_key_here
