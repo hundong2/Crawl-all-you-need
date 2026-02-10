@@ -9,13 +9,13 @@
 
 - Speed, Accuracy 
 
-| Rank | Model |
-|---|---|
-| 🥇 1st | **codex** |
-| 🥈 2nd | **gemini-cli** |
-| 🥉 3rd | **antigravity** |
-| 4th | **claude code** |
-| 5th | **copilot** |
+| Rank | Model | Spec |
+|---|---|---|
+| 🥇 1st | **codex** |  gpt-5.3-codex medium|
+| 🥈 2nd | **gemini-cli** | gemini-2.5-pro |
+| 🥉 3rd | **antigravity** | gemini-3.0-preview |
+| 4th | **claude code** | Opus 4.6 using teams |
+| 5th | **copilot** |  claude-sonnet-4.5 |
 
 ## Project at a Glance
 
