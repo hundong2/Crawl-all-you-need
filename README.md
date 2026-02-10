@@ -1,24 +1,26 @@
-# 문서 크롤링 웹페이지 프로젝트
+# Document Crawling Web Project
 
-> `codex` + `gemini-cli` + `claude-code` + `copilot-cli`로  
-> 문서를 크롤링하고, 웹페이지로 정리하는 실험형 프로젝트입니다.
+[English](./README.md) | [한국어](./README.kr.md) | [日本語](./README.jp.md) | [中文](./README.zh.md) | [Français](./README.fr.md)
 
-## 모델 평가 랭킹 (현재)
+> An experimental project using `codex`, `gemini-cli`, `claude-code`, and `copilot-cli`
+> to crawl documents and organize them into web pages.
 
-| 순위 | 모델 |
+## Model Ranking (Current)
+
+| Rank | Model |
 |---|---|
-| 🥇 1위 | **codex** |
-| 🥈 2위 | **gemini-cli** |
-| 🥉 3위 | **antigravity** |
-| 4위 | **claude code** |
-| 5위 | **copilot** |
+| 🥇 1st | **codex** |
+| 🥈 2nd | **gemini-cli** |
+| 🥉 3rd | **antigravity** |
+| 4th | **claude code** |
+| 5th | **copilot** |
 
-## 프로젝트 한 줄 소개
+## Project at a Glance
 
-- 목표: 여러 AI 코딩 에이전트로 문서를 수집/분석해 보기 좋은 웹페이지로 제공
-- 포인트: 같은 주제를 각 모델로 시도하고 결과물의 완성도와 생산성을 비교
-- 진행 방식: 반복 개선(크롤링 정확도, UI/UX, 자동화 파이프라인)
+- Goal: Collect and analyze documents with multiple AI coding agents, then present the results as user-friendly web pages.
+- Focus: Run the same topic with different models and compare output quality and productivity.
+- Workflow: Iterative improvement (crawl accuracy, UI/UX, automation pipeline).
 
-## 빠른 이동
+## Quick Link
 
-- 핵심 코드와 사용 방법: [`codex/README.md`](./codex/README.md)
+- Core code and usage guide: [`codex/README.md`](./codex/README.md)

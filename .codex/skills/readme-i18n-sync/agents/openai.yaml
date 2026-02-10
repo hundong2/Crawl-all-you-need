@@ -1,0 +1,4 @@
+interface:
+  display_name: "README I18N Sync"
+  short_description: "Sync README multilingual files safely."
+  default_prompt: "Sync README.md into Korean, Japanese, Chinese, and French files while preserving markdown structure and links."
