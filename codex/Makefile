@@ -4,7 +4,7 @@ PID_FILE := $(ROOT_DIR)/.codex-app.pid
 LOG_FILE := $(ROOT_DIR)/.codex-app.log
 PYTHON_BIN := $(ROOT_DIR)/.venv/bin/python
 
-.PHONY: start stop restart status logs
+.PHONY: start stop restart status logs screenshot-localhost-5678
 
 start:
 	@if [ -f "$(PID_FILE)" ] && kill -0 "$$(cat "$(PID_FILE)")" >/dev/null 2>&1; then \
@@ -65,3 +65,6 @@ logs:
 	else \
 		echo "No log file yet: $(LOG_FILE)"; \
 	fi
+
+screenshot-localhost-5678:
+	@bash "$(ROOT_DIR)/scripts/capture_localhost_5678.sh" "http://localhost:5678" "$(ROOT_DIR)/docs/images/localhost-5678.png"

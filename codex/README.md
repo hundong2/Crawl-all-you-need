@@ -2,6 +2,35 @@
 
 SiteBooker crawls a documentation site and generates a single markdown book (`book.md`) with optional LLM cleanup.
 
+## Web UI Preview (`localhost:5678`)
+The screenshot below shows the SiteBooker web interface running at `http://localhost:5678`.
+
+![SiteBooker Web UI on localhost](docs/images/codex_page.png)
+![SiteBooker Web UI Running Success!!!](docs/images/codex_page_run.png)
+
+### Refresh Screenshot
+Generate or update the screenshot file (`docs/images/localhost-5678.png`) from the running local app:
+
+1. Set `UV_PORT=5678` in `.env`.
+2. Start the app.
+3. Run the screenshot script.
+
+```bash
+cp .env.example .env
+# edit .env and set UV_PORT=5678
+make start
+make screenshot-localhost-5678
+```
+
+Direct command (optional):
+```bash
+bash scripts/capture_localhost_5678.sh http://localhost:5678 docs/images/localhost-5678.png
+```
+
+Requirements:
+- Node.js + npm (`npx`)
+- Internet access the first time (Playwright CLI package download)
+
 ## Features
 - Provider chooser: OpenAI / Anthropic / Google
 - Model chooser per provider
