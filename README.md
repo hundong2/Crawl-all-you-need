@@ -7,6 +7,8 @@
 
 ## Model Ranking (Current)
 
+- Speed, Accuracy 
+
 | Rank | Model |
 |---|---|
 | 🥇 1st | **codex** |
