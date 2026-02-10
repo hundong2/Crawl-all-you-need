@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SiteBooker</title>
+  <style>
+    :root {
+      --bg: #f5f3ef;
+      --card: #ffffff;
+      --ink: #202022;
+      --accent: #005a6f;
+      --accent-2: #f08c00;
+      --edge: #d7d3cc;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 10%, #ffffff 0%, var(--bg) 45%, #ebe6de 100%);
+      color: var(--ink);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .panel {
+      width: min(860px, 100%);
+      background: var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 18px;
+      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+      animation: rise 320ms ease-out;
+    }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    p { margin: 0 0 20px; color: #555; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+    input, select {
+      border: 1px solid var(--edge);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+    }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      border: none;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover { background: #004a5c; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--accent-2);
+      color: #8d4a00;
+      background: #fff5e9;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    pre {
+      margin: 16px 0 0;
+      border: 1px solid var(--edge);
+      border-radius: 10px;
+      padding: 12px;
+      background: #fafafa;
+      white-space: pre-wrap;
+      font-size: 12px;
+      min-height: 120px;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .box {
+      border: 1px solid var(--edge);
+      border-radius: 10px;
+      padding: 10px;
+      background: #fffdfa;
+      min-height: 100px;
+    }
+    .box h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+    }
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+    li { margin: 6px 0; }
+    a { color: var(--accent); }
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <h1>SiteBooker</h1>
+    <p>Crawl docs website and export a single markdown book.</p>
+    <div class="badge">Provider + Model + URL</div>
+
+    <form id="form" class="grid">
+      <div class="field">
+        <label for="provider">Provider</label>
+        <select id="provider" name="provider">
+          <option value="openai">OpenAI</option>
+          <option value="anthropic">Anthropic</option>
+          <option value="google">Google</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="model">Model</label>
+        <select id="model" name="model"></select>
+      </div>
+      <div class="field full">
+        <label for="root_url">Root URL</label>
+        <input id="root_url" name="root_url" placeholder="https://example.com/docs" required />
+      </div>
+      <div class="field">
+        <label for="max_pages">Max Pages</label>
+        <input id="max_pages" name="max_pages" type="number" value="30" min="1" max="300" />
+      </div>
+      <div class="field">
+        <label for="max_depth">Max Depth</label>
+        <input id="max_depth" name="max_depth" type="number" value="2" min="0" max="5" />
+      </div>
+      <div class="field full">
+        <label><input id="llm_refine" name="llm_refine" type="checkbox" /> LLM refine (dedupe/edit)</label>
+      </div>
+      <div class="field full">
+        <label>Output Formats</label>
+        <label><input id="fmt_md" type="checkbox" checked disabled /> Markdown (required)</label>
+        <label><input id="fmt_pdf" type="checkbox" /> PDF (pandoc)</label>
+        <label><input id="fmt_epub" type="checkbox" /> EPUB (pandoc)</label>
+        <label><input id="fmt_docx" type="checkbox" /> DOCX (pandoc)</label>
+      </div>
+    </form>
+
+    <div class="actions">
+      <button type="button" id="run">Build Book</button>
+      <span id="status"></span>
+    </div>
+
+    <pre id="result">Idle</pre>
+
+    <section class="split">
+      <div class="box">
+        <h3>Artifacts</h3>
+        <ul id="files"></ul>
+      </div>
+      <div class="box">
+        <h3>Recent Jobs</h3>
+        <ul id="history"></ul>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const providerEl = document.getElementById('provider');
+    const modelEl = document.getElementById('model');
+    const runEl = document.getElementById('run');
+    const statusEl = document.getElementById('status');
+    const resultEl = document.getElementById('result');
+    const filesEl = document.getElementById('files');
+    const historyEl = document.getElementById('history');
+    const fmtPdfEl = document.getElementById('fmt_pdf');
+    const fmtEpubEl = document.getElementById('fmt_epub');
+    const fmtDocxEl = document.getElementById('fmt_docx');
+
+    async function refreshModels() {
+      const provider = providerEl.value;
+      const res = await fetch(`/api/models/${provider}`);
+      const body = await res.json();
+      modelEl.innerHTML = '';
+      body.models.forEach((m, i) => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        if (i === 0) opt.selected = true;
+        modelEl.appendChild(opt);
+      });
+    }
+
+    function selectedFormats() {
+      const formats = ['md'];
+      if (fmtPdfEl.checked) formats.push('pdf');
+      if (fmtEpubEl.checked) formats.push('epub');
+      if (fmtDocxEl.checked) formats.push('docx');
+      return formats;
+    }
+
+    async function refreshHistory() {
+      const res = await fetch('/api/build/jobs?limit=10');
+      if (!res.ok) return;
+      const body = await res.json();
+      historyEl.innerHTML = '';
+      body.jobs.forEach((job) => {
+        const li = document.createElement('li');
+        li.textContent = `${job.job_id.slice(0, 8)}... ${job.status} (${job.progress}%)`;
+        historyEl.appendChild(li);
+      });
+    }
+
+    async function refreshFiles(jobId) {
+      filesEl.innerHTML = '';
+      const res = await fetch(`/api/build/jobs/${jobId}/files`);
+      if (!res.ok) return;
+      const body = await res.json();
+      body.files.forEach((name) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `/api/build/jobs/${jobId}/download/${encodeURIComponent(name)}`;
+        a.textContent = name;
+        a.target = '_blank';
+        li.appendChild(a);
+        filesEl.appendChild(li);
+      });
+    }
+
+    async function pollJob(jobId) {
+      while (true) {
+        const res = await fetch(`/api/build/jobs/${jobId}`);
+        const body = await res.json();
+        statusEl.textContent = `${body.status} (${body.progress}%)`;
+        resultEl.textContent = JSON.stringify(body, null, 2);
+        if (body.status === 'completed' || body.status === 'failed') {
+          if (body.status === 'completed') {
+            await refreshFiles(jobId);
+          }
+          await refreshHistory();
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 1200));
+      }
+    }
+
+    providerEl.addEventListener('change', refreshModels);
+
+    runEl.addEventListener('click', async () => {
+      statusEl.textContent = 'Running...';
+      resultEl.textContent = 'Building...';
+      filesEl.innerHTML = '';
+
+      const payload = {
+        provider: providerEl.value,
+        model: modelEl.value,
+        root_url: document.getElementById('root_url').value,
+        output_formats: selectedFormats(),
+        max_pages: Number(document.getElementById('max_pages').value),
+        max_depth: Number(document.getElementById('max_depth').value),
+        llm_refine: document.getElementById('llm_refine').checked,
+      };
+
+      try {
+        const res = await fetch('/api/build/jobs', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const body = await res.json();
+        if (!res.ok) {
+          statusEl.textContent = 'Failed';
+          resultEl.textContent = JSON.stringify(body, null, 2);
+          return;
+        }
+        statusEl.textContent = `queued (${body.status})`;
+        resultEl.textContent = JSON.stringify(body, null, 2);
+        await refreshHistory();
+        await pollJob(body.job_id);
+      } catch (err) {
+        statusEl.textContent = 'Failed';
+        resultEl.textContent = String(err);
+      }
+    });
+
+    refreshModels();
+    refreshHistory();
+  </script>
+</body>
+</html>
