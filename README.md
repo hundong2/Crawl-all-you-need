@@ -25,4 +25,5 @@
 
 ## Quick Link
 
-- Core code and usage guide: [`codex/README.md`](./codex/README.md)
+- Codex: Core code and usage guide: [`codex/README.md`](./codex/README.md)
+- Copilot: Core code and usage guide: [ copilot/README.md](./copilot/README.md)
