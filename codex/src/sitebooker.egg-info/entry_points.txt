@@ -1,0 +1,2 @@
+[console_scripts]
+sitebooker = sitebooker.main:run

@@ -1,0 +1,7 @@
+# Runtime temp/process files
+**/.codex-app.log
+**/.codex-app.pid
+
+# Common local temp files
+**/*.tmp
+**/.DS_Store
