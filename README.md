@@ -12,10 +12,10 @@
 | Rank | Model | Spec |
 |---|---|---|
 | 🥇 1st | **codex** |  gpt-5.3-codex medium|
-| 🥈 2nd | **gemini-cli** | gemini-2.5-pro |
-| 🥉 3rd | **antigravity** | gemini-3.0-preview |
-| 4th | **claude code** | Opus 4.6 using teams |
-| 5th | **copilot** |  claude-sonnet-4.5 |
+| 🥈 2nd | **copilot** |  claude-sonnet-4.5 |
+| 🥉 3rd | **gemini-cli** | gemini-2.5-pro |
+| 4th | **antigravity** | gemini-3.0-preview |
+| 5th | **claude code** | Opus 4.6 using teams |
 
 ## Project at a Glance
 
