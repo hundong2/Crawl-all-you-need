@@ -1,9 +1,0 @@
-fastapi
-uvicorn
-crawl4ai
-pydantic
-python-dotenv
-google-generativeai
-anthropic
-openai
-httpx
