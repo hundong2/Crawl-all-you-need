@@ -5,3 +5,20 @@
 # Common local temp files
 **/*.tmp
 **/.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+venv/
+.env
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+
+# Logs and PIDs
+*.log
+*.pid
