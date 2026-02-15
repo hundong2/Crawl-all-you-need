@@ -646,3 +646,70 @@ git diff origin/main HEAD --stat       # 3. 변경 파일 확인
 git rebase origin/main                 # 4. 충돌 있으면 여기서 해결
 git push origin feature/브랜치        # 5. push
 ```
+
+---
+
+## 14. PR 생성 전 pull이 필요한가? (심화)
+
+### PR 생성과 PR 머지는 다르다
+
+```
+git push → gh pr create   ← 충돌 검사 안 함 (항상 성공)
+                ↓
+         GitHub PR 페이지
+                ↓
+         Merge 버튼 클릭  ← 여기서 충돌 검사
+```
+
+- **PR 생성**: "이 브랜치를 머지 요청합니다" 등록. 충돌 여부와 무관하게 항상 성공
+- **PR 머지**: 실제로 main에 합칠 때 충돌 여부 판단
+
+### 충돌이 나는 조건
+
+충돌은 **같은 파일의 같은 줄**을 양쪽이 다르게 수정했을 때만 발생한다.
+
+```
+# 충돌 발생하는 케이스
+main:    README.md 10번째 줄 → "버전 1.0"으로 수정
+feature: README.md 10번째 줄 → "버전 2.0"으로 수정
+→ 충돌
+
+# 충돌 발생하지 않는 케이스
+main:    git.md 파일 없음
+feature: git.md 파일 새로 추가
+→ 충돌 없음 (추가만 했으므로)
+```
+
+변경사항이 **전부 추가(+)** 인지 확인하는 방법:
+```bash
+git diff origin/main HEAD --stat
+# 출력에 삭제(-)가 없고 추가(+)만 있으면 충돌 불가능
+```
+
+### 충돌이 생겼을 때 해결 방법
+
+**방법 A: GitHub에서 알려줌 (머지 전)**
+
+PR 페이지에 "This branch has conflicts that must be resolved" 표시 → Merge 버튼 비활성화
+
+**방법 B: 로컬에서 미리 해결 후 push (권장)**
+
+```bash
+git fetch origin
+git rebase origin/main      # 충돌 있으면 여기서 발생
+# 충돌 파일 수동 수정
+git add 충돌파일
+git rebase --continue       # 계속 진행
+git push origin 브랜치 --force-with-lease  # rebase 후 force push 필요
+```
+
+### 상황별 pull/rebase 필요 여부
+
+| 상황 | pull 필요? | 이유 |
+|------|-----------|------|
+| 파일 추가만 하는 PR | 불필요 | 충돌 자체가 불가능 |
+| 기존 파일 수정 포함 | 권장 | 같은 파일 수정 시 충돌 가능 |
+| main이 오래됐고 같은 파일 수정 | 필수 | 안 하면 GitHub에서 Merge 버튼 막힘 |
+
+> **핵심 원칙**: PR 생성은 언제든 가능. 충돌은 머지 시점에 판단된다.
+> 기존 파일을 수정하는 PR이라면 `git fetch && git rebase origin/main` 후 push하는 습관을 들이자.
