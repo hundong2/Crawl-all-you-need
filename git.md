@@ -646,7 +646,6 @@ git diff origin/main HEAD --stat       # 3. 변경 파일 확인
 git rebase origin/main                 # 4. 충돌 있으면 여기서 해결
 git push origin feature/브랜치        # 5. push
 ```
-
 ---
 
 ## 14. PR 생성 전 pull이 필요한가? (심화)

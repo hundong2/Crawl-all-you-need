@@ -1,0 +1,26 @@
+# 문서 크롤링 웹페이지 프로젝트
+
+[English](./README.md) | [한국어](./README.kr.md) | [日本語](./README.jp.md) | [中文](./README.zh.md) | [Français](./README.fr.md)
+
+> `codex`, `gemini-cli`, `claude-code`, `copilot-cli`를 활용해
+> 문서를 크롤링하고 웹페이지로 정리하는 실험형 프로젝트입니다.
+
+## 모델 평가 랭킹 (현재)
+
+| 순위 | 모델 |
+|---|---|
+| 🥇 1위 | **codex** |
+| 🥈 2위 | **gemini-cli** |
+| 🥉 3위 | **antigravity** |
+| 4위 | **claude code** |
+| 5위 | **copilot** |
+
+## 프로젝트 한 줄 소개
+
+- 목표: 여러 AI 코딩 에이전트로 문서를 수집/분석해 보기 좋은 웹페이지로 제공
+- 포인트: 같은 주제를 각 모델로 시도하고 결과물의 완성도와 생산성을 비교
+- 진행 방식: 반복 개선(크롤링 정확도, UI/UX, 자동화 파이프라인)
+
+## 빠른 이동
+
+- 핵심 코드와 사용 방법: [`codex/README.md`](./codex/README.md)
