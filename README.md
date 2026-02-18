@@ -27,3 +27,54 @@
 
 - Codex: Core code and usage guide: [`codex/README.md`](./codex/README.md)
 - Copilot: Core code and usage guide: [ copilot/README.md](./copilot/README.md)
+
+---
+
+## Claude Code Plugin — `security-audit`
+
+This repo ships a reusable Claude Code plugin for security auditing.
+It works in **any project** — not just this one.
+
+### What it does
+
+- `/security-audit` slash command — 4-phase scan, report, and auto-fix
+- Real-time hook that **blocks file writes** containing API keys or passwords
+
+### Install in another project
+
+#### Option A — Claude Code Plugin System (recommended)
+
+Open Claude Code in any project and run:
+
+```
+/plugin marketplace add hundong2/Crawl-all-you-need
+/plugin install security-audit
+```
+
+The hook activates automatically after installation.
+
+#### Option B — Command only (no hook), single project
+
+```bash
+mkdir -p .claude/commands
+curl -o .claude/commands/security-audit.md \
+  https://raw.githubusercontent.com/hundong2/Crawl-all-you-need/main/plugin/security-audit/commands/security-audit.md
+```
+
+#### Option C — Command only, global (all projects on this machine)
+
+```bash
+mkdir -p ~/.claude/commands
+curl -o ~/.claude/commands/security-audit.md \
+  https://raw.githubusercontent.com/hundong2/Crawl-all-you-need/main/plugin/security-audit/commands/security-audit.md
+```
+
+### Usage
+
+```
+/security-audit
+```
+
+Runs automatically: scan → severity report → auto-fix → manual action list.
+
+See [`plugin/security-audit/README.md`](./plugin/security-audit/README.md) for full documentation.

@@ -1,0 +1,13 @@
+{
+  "name": "security-audit",
+  "description": "Security audit tool: scans for hardcoded secrets, insecure patterns, and tracked sensitive files — then auto-fixes what it can",
+  "version": "1.0.0",
+  "author": {
+    "name": "hundong2",
+    "url": "https://github.com/hundong2"
+  },
+  "homepage": "https://github.com/hundong2/Crawl-all-you-need",
+  "repository": "https://github.com/hundong2/Crawl-all-you-need",
+  "license": "MIT",
+  "keywords": ["security", "audit", "secrets", "credentials", "gitignore", "SSRF", "CORS"]
+}
