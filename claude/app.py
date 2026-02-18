@@ -1,8 +1,14 @@
 """Entry point for the Site-to-Document Generator."""
 
+import logging
+
 import gradio as gr
 
 from ui.gradio_app import create_ui
+
+# Suppress Gradio's debug-level event logging to prevent API keys
+# from being written to log files (Gradio logs all callback inputs at DEBUG level)
+logging.getLogger("gradio").setLevel(logging.WARNING)
 
 
 def main():
